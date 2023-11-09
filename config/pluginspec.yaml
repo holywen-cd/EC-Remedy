@@ -1,0 +1,509 @@
+pluginInfo:
+  pluginName: 'EC-Remedy'
+  version: '2.0.0'
+  description: 'Cloudbees CD integration for the BMC Remedy System REST API'
+  author: 'Shaohua Wen swen@cloudbees.com'
+  supportUrl: 'none'
+  category: 'Resource Management'
+  shell: 'ec-groovy'
+
+# REST-backed plugin configuration
+configuration:
+  checkConnection: false
+  parameters:
+  -
+    name: authString
+    label: 'Authentication String'
+    required: false
+    type: entry
+
+  restConfigInfo:
+    endpointLabel: 'Remedy REST Endpoint'
+    checkConnectionUri: '/user'
+    headers:
+      Accept: 'application/json'
+    authSchemes:
+      basic:
+        userNameLabel: 'Username'
+        passwordLabel: 'Password'
+        description: 'Username and password to connect to ...'
+  hasProxySupport: true
+  hasDebugLevel: true
+
+procedures:
+-
+  name: 'Create Change Request'
+  description: 'Create Remedy Change Request'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Description
+    documentation: An change request description.
+    required: true
+    type: textarea
+    label: Description
+  -
+    name: Status
+    documentation: An change request status.
+    required: true
+    type: entry
+    label: Status
+  -
+    name: Urgency
+    documentation: An change request urgency.
+    required: true
+    type: entry
+    label: Urgency
+  -
+    name: Impact
+    documentation: An change request impact.
+    required: true
+    type: entry
+    label: Impact
+  -
+    name: First Name
+    documentation: An change request first name.
+    required: true
+    type: entry
+    label: First Name
+  -
+    name: Last Name
+    documentation: An change request last name.
+    required: true
+    type: entry
+    label: Last Name
+  -
+    name: Location Company
+    documentation: An change request location company.
+    required: true
+    type: entry
+    label: Location Company
+  -
+    name: Values
+    documentation: |
+      Fields for change request (JSON object).
+    required: true
+    type: textarea
+    label: Values
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  outputParameters:
+  -
+    name: entryId
+    description: Entry ID of the created change request.
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/CHG:ChangeInterface_Create'
+    methodName: 'createChangeRequest'
+    httpMethod: 'POST'
+
+-
+  name: 'Update Change Request'
+  description: 'Update Remedy Change Request'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Entry ID
+    documentation: Entry ID of a change request.
+    required: true
+    type: entry
+    label: Entry ID
+    restParamInfo:
+      in: path
+  -
+    name: Description
+    documentation: An change request description.
+    required: false
+    type: textarea
+    label: Description
+  -
+    name: Status
+    documentation: An change request status.
+    required: false
+    type: entry
+    label: Status
+  -
+    name: Urgency
+    documentation: An change request urgency.
+    required: false
+    type: entry
+    label: Urgency
+  -
+    name: Impact
+    documentation: An change request impact.
+    required: false
+    type: entry
+    label: Impact
+  -
+    name: First Name
+    documentation: An change request first name.
+    required: false
+    type: entry
+    label: First Name
+  -
+    name: Last Name
+    documentation: An change request last name.
+    required: false
+    type: entry
+    label: Last Name
+  -
+    name: Location Company
+    documentation: An change request location company.
+    required: false
+    type: entry
+    label: Location Company
+  -
+    name: Values
+    documentation: |
+      Fields for change request (JSON object).
+    required: false
+    type: textarea
+    label: Values
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/CHG:ChangeInterface_Create/{{Entry ID}}'
+    methodName: 'updateChangeRequest'
+    httpMethod: 'PUT'
+
+-
+  name: 'Get Change Request'
+  description: 'Get Remedy Change Request'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  - name: Entry ID
+    documentation: Entry ID of a change request.
+    required: true
+    type: entry
+    label: Entry ID
+    restParamInfo:
+      in: path
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/CHG:ChangeInterface_Create/{{Entry ID}}'
+    methodName: 'getChangeRequest'
+    httpMethod: 'GET'
+
+-
+  name: 'Create Entry'
+  description: 'Create Remedy Entry'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Form Name
+    documentation: Remedy form name, e.g. RMS:ReleaseInterface_Create
+    required: true
+    type: entry
+    label: Form Name
+    restParamInfo:
+      in: path
+  -
+    name: Values
+    documentation: |
+      Fields for entry (JSON object), e.g.
+      {
+        "values": {
+          "First Name": "Allen",
+          "Last Name": "Allbrook",
+          "Company": "Calbro Services",
+          "Milestone": "Initiate",
+          "Impact": "1-Extensive/Widespread",
+          "Urgency": "1-Critical",
+          "Risk Level": "Risk Level 1",
+          "Description": "Test Created Release",
+          "Location Company": "Calbro Services",
+          "Business Justification": "Defect"
+        }
+      }
+    required: true
+    type: textarea
+    label: Values
+    restParamInfo:
+      in: raw body
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  outputParameters:
+  -
+    name: entryId
+    description: Entry ID of the created entry.
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/{{Form Name}}'
+    methodName: 'createEntry'
+    httpMethod: 'POST'
+
+-
+  name: 'Update Entry'
+  description: 'Update Remedy Entry'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Form Name
+    documentation: Remedy form name, e.g. RMS:ReleaseInterface_Create
+    required: true
+    type: entry
+    label: Form Name
+    restParamInfo:
+      in: path
+  - name: Entry ID
+    documentation: Remedy entry ID
+    required: true
+    type: entry
+    label: Entry ID
+    restParamInfo:
+      in: path
+  -
+    name: Values
+    documentation: |
+      Fields for entry (JSON object), e.g.
+      {
+        "values":{
+          "Submitter":"Allen",
+          "Short Description":"testing 123"
+        }
+      }
+    required: true
+    type: textarea
+    label: Values
+    restParamInfo:
+      in: raw body
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/{{Form Name}}/{{Entry ID}}'
+    methodName: 'updateEntry'
+    httpMethod: 'PUT'
+
+-
+  name: 'Get Entry'
+  description: 'Fetches Remedy entry with the specified form name and entry ID'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Form Name
+    documentation: Remedy form name, e.g. RMS:ReleaseInterface_Create
+    required: true
+    type: entry
+    label: Form Name
+    restParamInfo:
+      in: path
+  - name: Entry ID
+    documentation: Remedy entry ID
+    required: true
+    type: entry
+    label: Entry ID
+    restParamInfo:
+      in: path
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/{{Form Name}}/{{Entry ID}}'
+    methodName: 'getEntry'
+    httpMethod: 'GET'
+
+-
+  name: 'Create Incident'
+  description: 'Create Remedy Incident'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Description
+    documentation: An incident description.
+    required: true
+    type: textarea
+    label: Description
+  -
+    name: Status
+    documentation: An incident status.
+    required: true
+    type: entry
+    label: Status
+  -
+    name: Urgency
+    documentation: An incident urgency.
+    required: true
+    type: entry
+    label: Urgency
+  -
+    name: Impact
+    documentation: An incident impact.
+    required: true
+    type: entry
+    label: Impact
+  -
+    name: First Name
+    documentation: An incident first name.
+    required: true
+    type: entry
+    label: First Name
+  -
+    name: Last Name
+    documentation: An incident last name.
+    required: true
+    type: entry
+    label: Last Name
+  -
+    name: Service_Type
+    documentation: An change request service type.
+    required: true
+    type: entry
+    label: Service Type
+  -
+    name: Reported Source
+    documentation: An change request reported source.
+    required: true
+    type: entry
+    label: Reported Source
+  -
+    name: Values
+    documentation: |
+      Fields for change request (JSON object).
+    required: true
+    type: textarea
+    label: Values
+  -
+    name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  outputParameters:
+    -
+      name: entryId
+      description: Entry ID of the created incident.
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/HPD:IncidentInterface_Create'
+    methodName: 'createIncident'
+    httpMethod: 'POST'
+
+-
+  name: 'Update Incident'
+  description: 'Update Remedy Incident'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Entry ID
+    documentation: Entry ID of a change request.
+    required: true
+    type: entry
+    label: Entry ID
+    restParamInfo:
+      in: path
+  - name: Description
+    documentation: An incident description.
+    required: false
+    type: textarea
+    label: Description
+  - name: Status
+    documentation: An incident status.
+    required: false
+    type: entry
+    label: Status
+  - name: Urgency
+    documentation: An incident urgency.
+    required: false
+    type: entry
+    label: Urgency
+  - name: Impact
+    documentation: An incident impact.
+    required: false
+    type: entry
+    label: Impact
+  - name: First Name
+    documentation: An incident first name.
+    required: false
+    type: entry
+    label: First Name
+  - name: Last Name
+    documentation: An incident last name.
+    required: false
+    type: entry
+    label: Last Name
+  - name: Values
+    documentation: |
+      Fields for change request (JSON object).
+    required: false
+    type: textarea
+    label: Values
+  - name: resultPropertyPath
+    documentation: |
+      The property path to store the result of the procedure.
+    required: false
+    type: entry
+    value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/HPD:IncidentInterface_Create/{{Entry ID}}'
+    methodName: 'updateIncident'
+    httpMethod: 'PUT'
+
+-
+  name: 'Get Incident'
+  description: 'Get Remedy incident details'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+    - name: Entry ID
+      documentation: Entry ID of a change request.
+      required: true
+      type: entry
+      label: Entry ID
+      restParamInfo:
+        in: path
+    -
+      name: resultPropertyPath
+      documentation: |
+        The property path to store the result of the procedure.
+      required: false
+      type: entry
+      value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: '/api/arsys/v1/entry/HPD:IncidentInterface_Create/{{Entry ID}}'
+    methodName: 'getIncident'
+    httpMethod: 'GET'
