@@ -54,7 +54,7 @@ Integrate with Remedy REST [API](https://docs.bmc.com/docs/ars1902/api-overview-
     ```
 
 4. check ECRemedy.groovy and ECRemedyRESTClient.groovy, the new function of the new api call should have been added to these two files by pdk
-5. update the new function in ECRemedy.groovy file, in the new function generated code block, replace `genECRemedyRESTClient` with `genECRemedyDynamicRESTClient` because we need to use the ECRemedyDynamicTokenRESTClient class for the authentication
+5. update the new function in ECRemedy.groovy file, in the new function generated code block, replace `genECRemedyRESTClient` with `ECRemedyDynamicTokenRESTClient` because we need to use the ECRemedyDynamicTokenRESTClient class for the authentication
 6. make changes to the generated new function to add extra logic to handle the response of the api call
 7. download dependencies:
 
