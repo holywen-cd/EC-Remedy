@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Wed Nov 08 17:21:43 ICT 2023
+Revised on Mon Nov 13 17:40:30 ICT 2023
 
 
 * * *
@@ -28,6 +28,7 @@ Contents
     *   [Create Incident](#create-incident)
     *   [Update Incident](#update-incident)
     *   [Get Incident](#get-incident)
+    *   [Wait for Change Request Window and Approval](#wait-for-change-request-window-and-approval)
 
 ## Overview
 
@@ -246,3 +247,16 @@ Get Remedy incident details
 | **Configuration Name** | Previously defined configuration for the plugin |
 | **Entry ID** | Entry ID of a change request. |
 | resultPropertyPath | The property path to store the result of the procedure.<br> |
+
+
+
+## Wait for Change Request Window and Approval
+
+Wait for Change Request Time Window and Approval
+
+### Wait for Change Request Window and Approval Parameters
+
+| Parameter | Description |
+| --- | --- |
+| **Configuration Name** | Previously defined configuration for the plugin |
+| **Entry ID** | Entry ID of a change request. |
