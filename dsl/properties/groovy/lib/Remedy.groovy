@@ -1,5 +1,8 @@
 import com.cloudbees.flowpdf.*
 import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import java.text.SimpleDateFormat
+import groovy.time.*
 
 /**
 * Remedy
@@ -49,7 +52,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.createChangeRequest(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -108,7 +111,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.updateChangeRequest(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -136,7 +139,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.getChangeRequest(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -165,7 +168,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.createEntry(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -196,7 +199,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.updateEntry(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -225,7 +228,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.getEntry(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -257,7 +260,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.createIncident(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -291,7 +294,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.updateIncident(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -319,7 +322,7 @@ class Remedy extends FlowPlugin {
 
         try {
             Object response = rest.getIncident(restParams)
-            log.info "Got response from server: $response"
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
 
             def resultPropertyPath = requestParams.get('resultPropertyPath')
             if(resultPropertyPath) {
@@ -334,6 +337,75 @@ class Remedy extends FlowPlugin {
             rest.logout()
         }
     }
+/**
+    * waitForChangeRequestWindowAndApproval - Wait for Change Request Window and Approval/Wait for Change Request Window and Approval
+    * Add your code into this method and it will be called when the step runs
+    * @param config (required: true)
+    * @param Entry ID (required: true)
+    
+    */
+    def waitForChangeRequestWindowAndApproval(StepParameters p, StepResult sr) {
+        WaitForChangeRequestWindowAndApprovalParameters sp = WaitForChangeRequestWindowAndApprovalParameters.initParameters(p)
+        ECRemedyDynamicTokenRESTClient rest = genECRemedyDynamicTokenRESTClient()
+        Map restParams = [:]
+        Map requestParams = p.asMap
+        restParams.put('Entry ID', requestParams.get('Entry ID'))
+        def notApprovedStates = ['Pending', 'New']
+
+        try {
+            Object response = rest.getChangeRequest(restParams)
+            log.info "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
+
+            def scheduledStartDate = response.get('Scheduled Start Date')
+            def scheduledEndDate = response.get('Scheduled End Date')
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a")
+            def currentDate = new Date()
+            long startTimeInSec = sdf.parse(scheduledStartDate).getTime() / 1000
+            long currentTimeInSec = currentDate.getTime() / 1000
+            long endTimeInSec = sdf.parse(scheduledEndDate).getTime() / 1000
+
+            long timeDiffInSec = startTimeInSec - currentTimeInSec
+            log.debug "timeDiffInSec: $timeDiffInSec"
+
+            if(timeDiffInSec > 20) {
+                long timeToSleepInSec = timeDiffInSec - 10
+                TimeDuration duration = TimeCategory.minus(scheduledStartDate, currentDate)
+
+                log.info "Change Request is not in window yet. Waiting for $duration"
+                sleep(timeDiffInSec.intValue() * 1000)
+            }
+
+            log.info "Waiting for Change Request to be in approved status"
+            //lets get the latest status
+            response = rest.getChangeRequest(restParams)
+            log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
+            def status = response.Status
+            while(status in notApprovedStates) {
+                log.debug  "status (at the start of wait loop): $status"
+                sleep 30 * 1000
+                response = rest.getChangeRequest(restParams)
+                print '.'
+                log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
+                status = response.Status
+                log.debug "status (at the end of wait loop): $status"
+            }
+
+            response = rest.getChangeRequest(restParams)
+            log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
+            status = response.Status
+            if(status == 'Cancelled') {
+                throw new Exception("Change Request is cancelled, Please raise a new Change Request")
+            }
+            log.debug 'status: ' + status
+            log.info "Change Request is in approved status"
+            sr.apply()
+            log.info("step Wait for Change Request Window and Approval has been finished")
+        } finally {
+            rest.logout()
+        }
+    }
+
 // === step ends ===
 
 }

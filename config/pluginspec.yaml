@@ -507,3 +507,17 @@ procedures:
     url: '/api/arsys/v1/entry/HPD:IncidentInterface_Create/{{Entry ID}}'
     methodName: 'getIncident'
     httpMethod: 'GET'
+
+-
+  name: 'Wait for Change Request Window and Approval'
+  description: 'Wait for Change Request Time Window and Approval'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+  -
+    name: Entry ID
+    documentation: Entry ID of a change request.
+    required: true
+    type: entry
+    label: Entry ID
+
