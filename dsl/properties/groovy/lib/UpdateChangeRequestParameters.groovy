@@ -74,7 +74,9 @@ class UpdateChangeRequestParameters {
         parameters.locationCompany = locationCompany
 
         def values = sp.getParameter('Values').value
-        parameters.values = values
+        parameters.values = values  ?: '{
+}
+'
 
         def resultPropertyPath = sp.getParameter('resultPropertyPath').value
         parameters.resultPropertyPath = resultPropertyPath  ?: '/myJob/entriesList'
@@ -82,4 +84,4 @@ class UpdateChangeRequestParameters {
         return parameters
     }
 }
-// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: fe02a36065950222b15c1fc81be4abb2 ===
+// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 05ad9a89fde7049de1501e9917e97b34 ===

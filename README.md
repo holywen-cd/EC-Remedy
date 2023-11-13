@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Mon Nov 13 17:40:30 ICT 2023
+Revised on Mon Nov 13 20:06:32 ICT 2023
 
 
 * * *
@@ -85,7 +85,7 @@ Create Remedy Change Request
 | **First Name** | An change request first name. |
 | **Last Name** | An change request last name. |
 | **Location Company** | An change request location company. |
-| **Values** | Fields for change request (JSON object).<br> |
+| **Values** | Fields for change request (JSON object). e.g.<br>{<br>  "First Name": "Allen",<br>  "Last Name": "Allbrook"<br>}<br> |
 | resultPropertyPath | The property path to store the result of the procedure.<br> |
 
 
@@ -114,7 +114,7 @@ Update Remedy Change Request
 | First Name | An change request first name. |
 | Last Name | An change request last name. |
 | Location Company | An change request location company. |
-| Values | Fields for change request (JSON object).<br> |
+| Values | Fields for change request (JSON object). e.g.<br>{<br>  "First Name": "Allen",<br>  "Last Name": "Allbrook"<br>}<br> |
 | resultPropertyPath | The property path to store the result of the procedure.<br> |
 
 

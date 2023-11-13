@@ -82,8 +82,15 @@ procedures:
   -
     name: Values
     documentation: |
-      Fields for change request (JSON object).
+      Fields for change request (JSON object). e.g.
+      {
+        "First Name": "Allen",
+        "Last Name": "Allbrook"
+      }
     required: true
+    value: |
+      {
+      }
     type: textarea
     label: Values
   -
@@ -162,8 +169,15 @@ procedures:
   -
     name: Values
     documentation: |
-      Fields for change request (JSON object).
+      Fields for change request (JSON object). e.g.
+      {
+        "First Name": "Allen",
+        "Last Name": "Allbrook"
+      }
     required: false
+    value: |
+      {
+      }
     type: textarea
     label: Values
   -
