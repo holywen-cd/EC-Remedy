@@ -89,7 +89,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
             send URLENC, queryBody
             response.success = { resp, body ->
                 log.debug resp.statusLine
-                //log.debug body
+                log.trace "token: ${body}"
                 tokenId = body
             }
             response.failure = { resp, body ->
