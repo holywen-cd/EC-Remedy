@@ -67,9 +67,7 @@ class CreateChangeRequestParameters {
         parameters.locationCompany = locationCompany
 
         def values = sp.getRequiredParameter('Values').value
-        parameters.values = values  ?: '{
-}
-'
+        parameters.values = values  ?: '{}'
 
         def resultPropertyPath = sp.getParameter('resultPropertyPath').value
         parameters.resultPropertyPath = resultPropertyPath  ?: '/myJob/entriesList'

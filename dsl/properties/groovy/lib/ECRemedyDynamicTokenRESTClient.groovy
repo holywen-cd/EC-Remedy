@@ -27,6 +27,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
     private ProxyConfig proxyConfig
 
     ECRemedyDynamicTokenRESTClient(String endpoint, RESTConfig restConfig, FlowPlugin plugin, String tokenId) {
+        super(endpoint, restConfig, plugin)
         this.endpoint = endpoint
         this.tokenId = tokenId
         this.log = plugin.log
@@ -38,17 +39,18 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
      */
     def logout(){
         def http = new HTTPBuilder(endpoint)
+        http.ignoreSSLIssues()
+        http.setHeaders([ 'Authorization': BEARER_PREFIX + ' ' +  tokenId])
 
         http.request(Method.POST) {
             uri.path = "api/jwt/logout"
-            headers.'Authorization' = 'AR-JWT ' + tokenId
-            send URLENC, []
+            send URLENC, [:]
             response.success = { resp, body ->
                 log.debug resp.statusLine
                 //log.debug body
             }
             response.failure = { resp, body ->
-                throw new Exception("fatal: Unable to release auth Token: ${resp.statusLine} ${body}")
+                log.info("(ignored) Unable to release auth Token: ${resp.statusLine} ${body}")
             }
         }
     }
@@ -80,6 +82,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
 
     private static void login(String endpoint, queryBody, log, String tokenId) {
         def http = new HTTPBuilder(endpoint)
+        http.ignoreSSLIssues()
 
         http.request(Method.POST) {
             uri.path = "/api/jwt/login"
@@ -97,7 +100,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
 
     RESTRequest augmentRequest(RESTRequest request) {
         def newRequest = super.augmentRequest(request)
-        newRequest.addHeader('Authorization', BEARER_PREFIX + ' ' + tokenId)
+        newRequest.setHeader('Authorization', BEARER_PREFIX + ' ' + tokenId)
         return newRequest
     }
 }

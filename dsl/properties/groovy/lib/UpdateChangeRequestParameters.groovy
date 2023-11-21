@@ -74,9 +74,7 @@ class UpdateChangeRequestParameters {
         parameters.locationCompany = locationCompany
 
         def values = sp.getParameter('Values').value
-        parameters.values = values  ?: '{
-}
-'
+        parameters.values = values  ?: '{}'
 
         def resultPropertyPath = sp.getParameter('resultPropertyPath').value
         parameters.resultPropertyPath = resultPropertyPath  ?: '/myJob/entriesList'

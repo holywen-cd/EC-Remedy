@@ -88,9 +88,7 @@ procedures:
         "Last Name": "Allbrook"
       }
     required: true
-    value: |
-      {
-      }
+    value: '{}'
     type: textarea
     label: Values
   -
@@ -175,9 +173,7 @@ procedures:
         "Last Name": "Allbrook"
       }
     required: false
-    value: |
-      {
-      }
+    value:  '{}'
     type: textarea
     label: Values
   -

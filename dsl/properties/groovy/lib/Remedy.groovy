@@ -46,7 +46,7 @@ class Remedy extends FlowPlugin {
         Map requestParams = p.asMap
 
         def requiredParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Location Company']
-        def optionalParams = [:]
+        def optionalParams = []
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'CREATE')
         restParams.put('payload', JsonOutput.toJson(payload))
 
@@ -104,7 +104,7 @@ class Remedy extends FlowPlugin {
         Map requestParams = p.asMap
         restParams.put('Entry ID', requestParams.get('Entry ID'))
 
-        def requiredParams = [:]
+        def requiredParams = []
         def optionalParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Location Company']
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'MODIFY')
         restParams.put('payload', JsonOutput.toJson(payload))
@@ -254,7 +254,7 @@ class Remedy extends FlowPlugin {
         Map requestParams = p.asMap
 
         def requiredParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Service_Type', 'Reported Source']
-        def optionalParams = [:]
+        def optionalParams = []
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'CREATE')
         restParams.put('payload', JsonOutput.toJson(payload))
 
@@ -287,7 +287,7 @@ class Remedy extends FlowPlugin {
         Map requestParams = p.asMap
         restParams.put('Entry ID', requestParams.get('Entry ID'))
 
-        def requiredParams = [:]
+        def requiredParams = []
         def optionalParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name']
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'MODIFY')
         restParams.put('payload', JsonOutput.toJson(payload))
