@@ -16,6 +16,12 @@ configuration:
     label: 'Authentication String'
     required: false
     type: entry
+  -
+    name: ignoreSSLIssues
+    label: 'ignore SSL Issues'
+    required: false
+    type: checkbox
+    value: false
 
   restConfigInfo:
     endpointLabel: 'Remedy REST Endpoint'

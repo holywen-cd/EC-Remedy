@@ -66,6 +66,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
         Credential credential
         RESTConfig restConfig = new RESTConfig()
             .withEndpoint(endpoint)
+            .withIgnoreSSLIssues(config.getParameter('ignoreSSLIssues'))
 
         credential = config.getCredential('basic_credential')
 
