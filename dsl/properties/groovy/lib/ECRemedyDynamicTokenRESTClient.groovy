@@ -43,7 +43,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
         http.setHeaders([ 'Authorization': BEARER_PREFIX + ' ' +  tokenId])
 
         http.request(Method.POST) {
-            uri.path = "api/jwt/logout"
+            uri.path = "/api/jwt/logout"
             send URLENC, [:]
             response.success = { resp, body ->
                 log.debug resp.statusLine
