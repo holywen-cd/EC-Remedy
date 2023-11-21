@@ -50,7 +50,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
                 //log.debug body
             }
             response.failure = { resp, body ->
-                log.info("(ignored) Unable to release auth Token: ${resp.statusLine} ${body}")
+                log.info("logout: (ignored) Unable to release auth Token: ${resp.statusLine} ${body}")
             }
         }
     }
