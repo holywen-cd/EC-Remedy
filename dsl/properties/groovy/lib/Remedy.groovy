@@ -1,3 +1,6 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException
+import com.cloudbees.flowpdf.components.ComponentManager
+
 import com.cloudbees.flowpdf.*
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
@@ -48,7 +51,7 @@ class Remedy extends FlowPlugin {
         def requiredParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Location Company']
         def optionalParams = []
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'CREATE')
-        restParams.put('payload', JsonOutput.toJson(payload))
+        restParams.put('payload', payload)
 
         try {
             Object response = rest.createChangeRequest(restParams)
@@ -61,7 +64,7 @@ class Remedy extends FlowPlugin {
                 sr.setOutcomeProperty(resultPropertyPath, result)
             }
 
-            sr.setOutputParameter('entryId', response.entryId)
+            sr.setOutputParameter('entryId', response.values.get('Infrastructure Change Id'))
 
             sr.apply()
             log.info "Create Change Request completed successfully"
@@ -107,7 +110,7 @@ class Remedy extends FlowPlugin {
         def requiredParams = []
         def optionalParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Location Company']
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'MODIFY')
-        restParams.put('payload', JsonOutput.toJson(payload))
+        restParams.put('payload', payload)
 
         try {
             Object response = rest.updateChangeRequest(restParams)
@@ -256,7 +259,7 @@ class Remedy extends FlowPlugin {
         def requiredParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name', 'Service_Type', 'Reported Source']
         def optionalParams = []
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'CREATE')
-        restParams.put('payload', JsonOutput.toJson(payload))
+        restParams.put('payload', payload)
 
         try {
             Object response = rest.createIncident(restParams)
@@ -290,7 +293,7 @@ class Remedy extends FlowPlugin {
         def requiredParams = []
         def optionalParams = ['Description', 'Status', 'Urgency', 'Impact', 'First Name', 'Last Name']
         def payload = preparePayload(requiredParams, optionalParams, requestParams, 'MODIFY')
-        restParams.put('payload', JsonOutput.toJson(payload))
+        restParams.put('payload', payload)
 
         try {
             Object response = rest.updateIncident(restParams)
@@ -406,6 +409,35 @@ class Remedy extends FlowPlugin {
         }
     }
 
+/**
+    * Procedure parameters:
+    * @param config
+    * @param queryString
+    * @param previewMode
+    * @param transformScript
+    * @param debug
+    * @param releaseName
+    * @param releaseProjectName
+    
+    */
+    def collectReportingData(StepParameters paramsStep, StepResult sr) {
+        def params = paramsStep.getAsMap()
+
+        throw new NotImplementedException()
+
+        if (params['debug']) {
+            log.setLogLevel(log.LOG_DEBUG)
+        }
+
+        
+        Reporting reporting = (Reporting) ComponentManager.loadComponent(ReportingRemedy.class, [
+                reportObjectTypes  : ['incident'],
+                metadataUniqueKey  : params['queryString'],
+                payloadKeys        : ['fill me in'],
+        ], this)
+        reporting.collectReportingData()
+        
+    }
 // === step ends ===
 
 }

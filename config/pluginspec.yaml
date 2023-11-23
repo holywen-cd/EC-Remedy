@@ -38,6 +38,22 @@ configuration:
   hasProxySupport: true
   hasDebugLevel: true
 
+devOpsInsight:
+  supportedReports:
+  -
+    reportObjectType: 'incident'
+    parameters:
+    -
+      name: queryString
+      label: 'Query String'
+      htmlDocumentation: 'Query string to filter incidents, e.g. "Status%20%3D%20%22Assigned%22"'
+      required: true
+      type: entry
+  # The name of the source as it will appear in the dashboards
+  datasourceName: 'Remedy'
+  language: 'groovy'
+
+
 procedures:
 -
   name: 'Create Change Request'

@@ -40,6 +40,7 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
     def logout(){
         def http = new HTTPBuilder(endpoint)
         http.ignoreSSLIssues()
+        log.trace("logout:Authorization: ${BEARER_PREFIX} ${tokenId}")
         http.setHeaders([ 'Authorization': BEARER_PREFIX + ' ' +  tokenId])
 
         http.request(Method.POST) {
@@ -77,13 +78,14 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
 
         def queryBody = [ username: credential.userName, password: credential.secretValue , authString: config.getParameter('authString').value ]
         log.trace "queryBody: ${queryBody}"
-        login(endpoint, queryBody, log, tokenId)
+        tokenId = login(endpoint, queryBody, log)
 
         return new ECRemedyDynamicTokenRESTClient(endpoint, restConfig, plugin, tokenId)
     }
 
-    private static void login(String endpoint, queryBody, log, String tokenId) {
+    private static String login(String endpoint, queryBody, log) {
         def http = new HTTPBuilder(endpoint)
+        String retTokenId
         http.ignoreSSLIssues()
 
         http.request(Method.POST) {
@@ -91,18 +93,21 @@ class ECRemedyDynamicTokenRESTClient extends ECRemedyRESTClient{
             send URLENC, queryBody
             response.success = { resp, body ->
                 log.debug resp.statusLine
-                log.trace "token: ${body}"
-                tokenId = body
+                retTokenId = "${body}"
+                log.trace "retTokenId: ${retTokenId}"
             }
             response.failure = { resp, body ->
                 throw new Exception("fatal: Unable to get auth Token: ${resp.statusLine} ${body}")
             }
         }
+        return retTokenId
     }
 
     RESTRequest augmentRequest(RESTRequest request) {
         def newRequest = super.augmentRequest(request)
+        log.trace "Authorization: ${BEARER_PREFIX} ${tokenId}"
         newRequest.setHeader('Authorization', BEARER_PREFIX + ' ' + tokenId)
+        log.trace ("newRequest: ${newRequest}")
         return newRequest
     }
 }

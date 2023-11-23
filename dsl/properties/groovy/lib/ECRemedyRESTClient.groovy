@@ -434,9 +434,14 @@ class ECRemedyRESTClient {
      * Use this method for any request pre-processing: adding custom headers, binary files, etc.
      */
     RESTRequest augmentRequest(RESTRequest request) {
+        if(procedureName == 'createChangeRequest'  || procedureName == 'createIncident' ) {
+            request.setQuery('fields', 'values(Infrastructure Change Id)')
+        }
+
         if(procedureName == 'createChangeRequest' || procedureName == 'updateChangeRequest' \
             || procedureName == 'createIncident' || procedureName == 'updateIncident' ) {
-            request.withContentString(JsonOutput.toJson(procedureParameters))
+            request.withContentString(JsonOutput.toJson(procedureParameters.payload))
+            log.trace("payload: ${request.contentString}")
         }
         return request
     }
@@ -453,8 +458,12 @@ class ECRemedyRESTClient {
      */
     def parseResponse(RESTResponse restResponse, Object body) {
         //Relying on http builder content type processing
-        def slurper = new JsonSlurper()
-        return slurper.parseText(body)
+        if(body != '') {
+            def slurper = new JsonSlurper()
+            log.trace("Response body: ${body}")
+            return slurper.parseText(body)
+        }
+        return body
     }
 
     /**
