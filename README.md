@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Mon Nov 13 20:06:32 ICT 2023
+Revised on Fri Nov 24 16:43:54 ICT 2023
 
 
 * * *
@@ -22,12 +22,15 @@ Contents
     *   [Create Change Request](#create-change-request)
     *   [Update Change Request](#update-change-request)
     *   [Get Change Request](#get-change-request)
+    *   [Get Change Request by Infrastructure Change Id](#get-change-request-by-infrastructure-change-id)
     *   [Create Entry](#create-entry)
     *   [Update Entry](#update-entry)
     *   [Get Entry](#get-entry)
     *   [Create Incident](#create-incident)
     *   [Update Incident](#update-incident)
     *   [Get Incident](#get-incident)
+    *   [Get Incident By Incident Number](#get-incident-by-incident-number)
+    *   [Get Service Request By Request Number](#get-service-request-by-request-number)
     *   [Wait for Change Request Window and Approval](#wait-for-change-request-window-and-approval)
 
 ## Overview
@@ -93,7 +96,8 @@ Create Remedy Change Request
 
 | Parameter | Description |
 | --- | --- |
-| entryId | Entry ID of the created change request. |
+| Change_Entry_ID | Entry ID of the created change request. |
+| Infrastructure Change Id | Infrastructure Change Id of the created change request. |
 
 
 
@@ -129,6 +133,20 @@ Get Remedy Change Request
 | --- | --- |
 | **Configuration Name** | Previously defined configuration for the plugin |
 | **Entry ID** | Entry ID of a change request. |
+| resultPropertyPath | The property path to store the result of the procedure.<br> |
+
+
+
+## Get Change Request by Infrastructure Change Id
+
+Get Remedy Change Request by Infrastructure Change Id
+
+### Get Change Request by Infrastructure Change Id Parameters
+
+| Parameter | Description |
+| --- | --- |
+| **Configuration Name** | Previously defined configuration for the plugin |
+| **Infrastructure Change Id** | Infrastructure Change Id of a change request. |
 | resultPropertyPath | The property path to store the result of the procedure.<br> |
 
 
@@ -250,6 +268,34 @@ Get Remedy incident details
 
 
 
+## Get Incident By Incident Number
+
+Get Remedy Incident Details By Incident Number
+
+### Get Incident By Incident Number Parameters
+
+| Parameter | Description |
+| --- | --- |
+| **Configuration Name** | Previously defined configuration for the plugin |
+| **Incident Number** | Incident Number of a incident. |
+| resultPropertyPath | The property path to store the result of the procedure.<br> |
+
+
+
+## Get Service Request By Request Number
+
+Get Remedy Service Request Details By Request Number
+
+### Get Service Request By Request Number Parameters
+
+| Parameter | Description |
+| --- | --- |
+| **Configuration Name** | Previously defined configuration for the plugin |
+| **Request Number** | Request Number of a Service Request. |
+| resultPropertyPath | The property path to store the result of the procedure.<br> |
+
+
+
 ## Wait for Change Request Window and Approval
 
 Wait for Change Request Time Window and Approval
@@ -259,4 +305,4 @@ Wait for Change Request Time Window and Approval
 | Parameter | Description |
 | --- | --- |
 | **Configuration Name** | Previously defined configuration for the plugin |
-| **Entry ID** | Entry ID of a change request. |
+| **Infrastructure Change Id** | Infrastructure Change Id of a change request. |
