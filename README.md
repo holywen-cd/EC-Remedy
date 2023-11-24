@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Fri Nov 24 16:43:54 ICT 2023
+Revised on Fri Nov 24 16:46:18 ICT 2023
 
 
 * * *
@@ -36,7 +36,7 @@ Contents
 ## Overview
 
 
-Cloudbees CD integration for the BMC Remedy System REST API
+Cloudbees CD integration for the <a href="https://docs.bmc.com/docs/ars1902/integrating-ar-system-forms-with-a-third-party-application-by-using-rest-api-846052091.html">BMC Remedy System REST API</a>
 
 
 

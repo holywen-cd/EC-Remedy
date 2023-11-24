@@ -1,7 +1,7 @@
 pluginInfo:
   pluginName: 'EC-Remedy'
   version: '2.0.0'
-  description: 'Cloudbees CD integration for the BMC Remedy System REST API'
+  description: 'Cloudbees CD integration for the <a href="https://docs.bmc.com/docs/ars1902/integrating-ar-system-forms-with-a-third-party-application-by-using-rest-api-846052091.html">BMC Remedy System REST API</a>'
   author: 'Shaohua Wen swen@cloudbees.com'
   supportUrl: 'none'
   category: 'Resource Management'
