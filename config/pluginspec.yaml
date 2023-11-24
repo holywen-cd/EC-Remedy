@@ -124,8 +124,11 @@ procedures:
     value: /myJob/entriesList
   outputParameters:
   -
-    name: entryId
+    name: Change_Entry_ID
     description: Entry ID of the created change request.
+  -
+    name: Infrastructure Change Id
+    description: Infrastructure Change Id of the created change request.
   # Connects REST endpoint to the plugin procedure
   restProcedureInfo:
     url: '/api/arsys/v1/entry/CHG:ChangeInterface_Create'
@@ -237,6 +240,30 @@ procedures:
   restProcedureInfo:
     url: '/api/arsys/v1/entry/CHG:ChangeInterface_Create/{{Entry ID}}'
     methodName: 'getChangeRequest'
+    httpMethod: 'GET'
+
+-
+  name: 'Get Change Request by Infrastructure Change Id'
+  description: 'Get Remedy Change Request by Infrastructure Change Id'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+    - name: Infrastructure Change Id
+      documentation: Infrastructure Change Id of a change request.
+      required: true
+      type: entry
+      label: Infrastructure Change Id
+    -
+      name: resultPropertyPath
+      documentation: |
+        The property path to store the result of the procedure.
+      required: false
+      type: entry
+      value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: api/arsys/v1/entry/CHG:ChangeInterface
+    methodName: 'getChangeRequestByInfrastructureChangeId'
     httpMethod: 'GET'
 
 -
@@ -543,15 +570,63 @@ procedures:
     httpMethod: 'GET'
 
 -
+  name: 'Get Incident By Incident Number'
+  description: 'Get Remedy Incident Details By Incident Number'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+    - name: Incident Number
+      documentation: Incident Number of a incident.
+      required: true
+      type: entry
+      label: Incident Number
+    -
+      name: resultPropertyPath
+      documentation: |
+        The property path to store the result of the procedure.
+      required: false
+      type: entry
+      value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: api/arsys/v1/entry/HPD:IncidentInterface
+    methodName: 'getIncidentByIncidentNumber'
+    httpMethod: 'GET'
+
+-
+  name: 'Get Service Request By Request Number'
+  description: 'Get Remedy Service Request Details By Request Number'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+    - name: Request Number
+      documentation: Request Number of a Service Request.
+      required: true
+      type: entry
+      label: Request Number
+    -
+      name: resultPropertyPath
+      documentation: |
+        The property path to store the result of the procedure.
+      required: false
+      type: entry
+      value: /myJob/entriesList
+  # Connects REST endpoint to the plugin procedure
+  restProcedureInfo:
+    url: api/arsys/v1/entry/SRM:RequestInterface
+    methodName: 'getServiceRequestByRequestNumber'
+    httpMethod: 'GET'
+
+-
   name: 'Wait for Change Request Window and Approval'
   description: 'Wait for Change Request Time Window and Approval'
   hasConfig: true
   shell: 'ec-groovy'
   parameters:
   -
-    name: Entry ID
-    documentation: Entry ID of a change request.
+    name: Infrastructure Change Id
+    documentation: Infrastructure Change Id of a change request.
     required: true
     type: entry
-    label: Entry ID
+    label: Infrastructure Change Id
 

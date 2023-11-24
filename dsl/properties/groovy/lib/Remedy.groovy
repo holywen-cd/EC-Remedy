@@ -64,7 +64,8 @@ class Remedy extends FlowPlugin {
                 sr.setOutcomeProperty(resultPropertyPath, result)
             }
 
-            sr.setOutputParameter('entryId', response.values.get('Infrastructure Change Id'))
+            sr.setOutputParameter('Infrastructure Change Id', response.values.get('Infrastructure Change Id'))
+            sr.setOutputParameter('Change_Entry_ID', response.values.get('Change_Entry_ID'))
 
             sr.apply()
             log.info "Create Change Request completed successfully"
@@ -352,17 +353,19 @@ class Remedy extends FlowPlugin {
         ECRemedyDynamicTokenRESTClient rest = genECRemedyDynamicTokenRESTClient()
         Map restParams = [:]
         Map requestParams = p.asMap
-        restParams.put('Entry ID', requestParams.get('Entry ID'))
-        def notApprovedStates = ['Pending', 'New']
+        restParams.put('Infrastructure Change Id', requestParams.get('Infrastructure Change Id'))
+        def notApprovedStates = ['Draft', 'Planning In Progress', 'Schedule For Approval']
+        def approvedStates = ['Scheduled', 'Implementation In Progress']
 
         try {
-            Object response = rest.getChangeRequest(restParams)
-            log.info "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
+            Object response = rest.getChangeRequestByInfrastructureChangeId(restParams)
+            log.info "Got rest.getChangeRequestByInfrastructureChangeId response from server: ${JsonOutput.toJson(response)}"
 
-            def scheduledStartDate = response.get('Scheduled Start Date')
-            def scheduledEndDate = response.get('Scheduled End Date')
+            def scheduledStartDate = response.entries[0].values.get('Scheduled Start Date')
+            def scheduledEndDate = response.entries[0].values.get('Scheduled End Date')
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a")
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            def strtDate = sdf.parse(scheduledStartDate)
             def currentDate = new Date()
             long startTimeInSec = sdf.parse(scheduledStartDate).getTime() / 1000
             long currentTimeInSec = currentDate.getTime() / 1000
@@ -373,7 +376,7 @@ class Remedy extends FlowPlugin {
 
             if(timeDiffInSec > 20) {
                 long timeToSleepInSec = timeDiffInSec - 10
-                TimeDuration duration = TimeCategory.minus(scheduledStartDate, currentDate)
+                TimeDuration duration = TimeCategory.minus(strtDate, currentDate)
 
                 log.info "Change Request is not in window yet. Waiting for $duration"
                 sleep(timeDiffInSec.intValue() * 1000)
@@ -381,22 +384,22 @@ class Remedy extends FlowPlugin {
 
             log.info "Waiting for Change Request to be in approved status"
             //lets get the latest status
-            response = rest.getChangeRequest(restParams)
-            log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
-            def status = response.Status
+            response = rest.getChangeRequestByInfrastructureChangeId(restParams)
+            log.debug "Got rest.getChangeRequestByInfrastructureChangeId response from server: ${JsonOutput.toJson(response)}"
+            def status = response.entries[0].values.get("Change Request Status")
             while(status in notApprovedStates) {
                 log.debug  "status (at the start of wait loop): $status"
-                sleep 30 * 1000
-                response = rest.getChangeRequest(restParams)
+                sleep 300 * 1000
+                response = rest.getChangeRequestByInfrastructureChangeId(restParams)
                 print '.'
-                log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
-                status = response.Status
+                log.debug "Got rest.getChangeRequestByInfrastructureChangeId response from server: ${JsonOutput.toJson(response)}"
+                status = response.entries[0].values.get("Change Request Status")
                 log.debug "status (at the end of wait loop): $status"
             }
 
-            response = rest.getChangeRequest(restParams)
-            log.debug "Got rest.getChangeRequest response from server: ${JsonOutput.toJson(response)}"
-            status = response.Status
+            response = rest.getChangeRequestByInfrastructureChangeId(restParams)
+            log.debug "Got rest.getChangeRequestByInfrastructureChangeId response from server: ${JsonOutput.toJson(response)}"
+            status = response.entries[0].values.get("Change Request Status")
             if(status == 'Cancelled') {
                 throw new Exception("Change Request is cancelled, Please raise a new Change Request")
             }
@@ -437,6 +440,89 @@ class Remedy extends FlowPlugin {
         ], this)
         reporting.collectReportingData()
         
+    }
+/**
+     * Auto-generated method for the procedure Get Change Request by Infrastructure Change Id/Get Change Request by Infrastructure Change Id
+     * Add your code into this method and it will be called when step runs* Parameter: config* Parameter: Infrastructure Change Id* Parameter: resultPropertyPath
+     */
+    def getChangeRequestByInfrastructureChangeId(StepParameters p, StepResult sr) {
+        GetChangeRequestByInfrastructureChangeIdParameters sp = GetChangeRequestByInfrastructureChangeIdParameters.initParameters(p)
+        ECRemedyDynamicTokenRESTClient rest = genECRemedyDynamicTokenRESTClient()
+        Map restParams = [:]
+        Map requestParams = p.asMap
+        restParams.put('Infrastructure Change Id', requestParams.get('Infrastructure Change Id'))
+
+        try {
+            Object response = rest.getChangeRequestByInfrastructureChangeId(restParams)
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
+
+            def resultPropertyPath = requestParams.get('resultPropertyPath')
+            if(resultPropertyPath) {
+                def result = JsonOutput.toJson(response)
+                log.info "Setting step result property $resultPropertyPath to: $result"
+                sr.setOutcomeProperty(resultPropertyPath, result)
+            }
+
+            sr.apply()
+            log.info "Get Change Request by Infrastructure Change Id completed successfully"
+        } finally {
+            rest.logout()
+        }
+    }
+/**
+     * Auto-generated method for the procedure Get Incident By Incident Number/Get Incident By Incident Number
+     * Add your code into this method and it will be called when step runs* Parameter: config* Parameter: Incident Number* Parameter: resultPropertyPath
+     */
+    def getIncidentByIncidentNumber(StepParameters p, StepResult sr) {
+        GetIncidentByIncidentNumberParameters sp = GetIncidentByIncidentNumberParameters.initParameters(p)
+        ECRemedyDynamicTokenRESTClient rest = genECRemedyDynamicTokenRESTClient()
+        Map restParams = [:]
+        Map requestParams = p.asMap
+        restParams.put('Incident Number', requestParams.get('Incident Number'))
+
+        try {
+            Object response = rest.getIncidentByIncidentNumber(restParams)
+            log.info "Got response from server: ${JsonOutput.toJson(response)}"
+
+            def resultPropertyPath = requestParams.get('resultPropertyPath')
+            if(resultPropertyPath) {
+                def result = JsonOutput.toJson(response)
+                log.info "Setting step result property $resultPropertyPath to: $result"
+                sr.setOutcomeProperty(resultPropertyPath, result)
+            }
+
+            sr.apply()
+            log.info "Get Incident By Incident Number completed successfully"
+        } finally {
+            rest.logout()
+        }
+    }
+/**
+     * Auto-generated method for the procedure Get Service Request By Request Number/Get Service Request By Request Number
+     * Add your code into this method and it will be called when step runs* Parameter: config* Parameter: Request Number* Parameter: resultPropertyPath
+     */
+    def getServiceRequestByRequestNumber(StepParameters p, StepResult sr) {
+        GetServiceRequestByRequestNumberParameters sp = GetServiceRequestByRequestNumberParameters.initParameters(p)
+        ECRemedyRESTClient rest = genECRemedyRESTClient()
+        Map restParams = [:]
+        Map requestParams = p.asMap
+        restParams.put('Request Number', requestParams.get('Request Number'))
+
+        try {
+            Object response = rest.getServiceRequestByRequestNumber(restParams)
+            log.info "Got response from server: $response"
+
+            def resultPropertyPath = requestParams.get('resultPropertyPath')
+            if(resultPropertyPath) {
+                def result = JsonOutput.toJson(response)
+                log.info "Setting step result property $resultPropertyPath to: $result"
+                sr.setOutcomeProperty(resultPropertyPath, result)
+            }
+
+            sr.apply()
+        } finally {
+            rest.logout()
+        }
     }
 // === step ends ===
 

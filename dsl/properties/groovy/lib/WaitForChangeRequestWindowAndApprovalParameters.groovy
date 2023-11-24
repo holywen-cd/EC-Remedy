@@ -6,17 +6,17 @@ import com.cloudbees.flowpdf.StepParameters
 
 class WaitForChangeRequestWindowAndApprovalParameters {
     /**
-    * Label: Entry ID, type: entry
+    * Label: Infrastructure Change Id, type: entry
     */
-    String entryID
+    String infrastructureChangeId
 
     static WaitForChangeRequestWindowAndApprovalParameters initParameters(StepParameters sp) {
         WaitForChangeRequestWindowAndApprovalParameters parameters = new WaitForChangeRequestWindowAndApprovalParameters()
 
-        def entryID = sp.getRequiredParameter('Entry ID').value
-        parameters.entryID = entryID
+        def infrastructureChangeId = sp.getRequiredParameter('Infrastructure Change Id').value
+        parameters.infrastructureChangeId = infrastructureChangeId
 
         return parameters
     }
 }
-// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 52c59ae56e97008d34118fe907aef86c ===
+// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 17579f8771f21fc37309e8880677fbac ===

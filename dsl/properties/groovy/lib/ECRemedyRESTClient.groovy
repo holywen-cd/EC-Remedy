@@ -253,6 +253,33 @@ class ECRemedyRESTClient {
         return makeRequest('GET', uri, query, payload, headers)
     }
 
+    /** Generated code for the endpoint api/arsys/v1/entry/CHG:ChangeInterface
+    * Do not change this code
+    */
+    def getChangeRequestByInfrastructureChangeId(Map<String, Object> params) {
+        this.procedureName = 'getChangeRequestByInfrastructureChangeId'
+        this.procedureParameters = params
+
+        String uri = 'api/arsys/v1/entry/CHG:ChangeInterface'
+        log.debug("URI template $uri")
+        uri = renderOneLineTemplate(uri, params)
+
+        Map query = [:]
+
+        log.debug "Query: ${query}"
+
+        Object payload
+
+        String jsonTemplate = ''''''
+        if (jsonTemplate) {
+            payload = payloadFromTemplate(jsonTemplate, params)
+            log.debug("Payload from template: $payload")
+        }
+        //TODO clean empty fields
+        Map headers = [:]
+        return makeRequest('GET', uri, query, payload, headers)
+    }
+
     /** Generated code for the endpoint /api/arsys/v1/entry/{{Form Name}}
     * Do not change this code
     * Form Name: in path
@@ -429,13 +456,71 @@ class ECRemedyRESTClient {
         Map headers = [:]
         return makeRequest('GET', uri, query, payload, headers)
     }
-// DO NOT EDIT THIS BLOCK ABOVE ^^^=== rest client ends, checksum: 5588d99c09d57d10eebe7215badf3164 ===
+
+    /** Generated code for the endpoint api/arsys/v1/entry/HPD:IncidentInterface
+    * Do not change this code
+    */
+    def getIncidentByIncidentNumber(Map<String, Object> params) {
+        this.procedureName = 'getIncidentByIncidentNumber'
+        this.procedureParameters = params
+
+        String uri = 'api/arsys/v1/entry/HPD:IncidentInterface'
+        log.debug("URI template $uri")
+        uri = renderOneLineTemplate(uri, params)
+
+        Map query = [:]
+
+        log.debug "Query: ${query}"
+
+        Object payload
+
+        String jsonTemplate = ''''''
+        if (jsonTemplate) {
+            payload = payloadFromTemplate(jsonTemplate, params)
+            log.debug("Payload from template: $payload")
+        }
+        //TODO clean empty fields
+        Map headers = [:]
+        return makeRequest('GET', uri, query, payload, headers)
+    }
+
+    /** Generated code for the endpoint api/arsys/v1/entry/SRM:RequestInterface
+    * Do not change this code
+    */
+    def getServiceRequestByRequestNumber(Map<String, Object> params) {
+        this.procedureName = 'getServiceRequestByRequestNumber'
+        this.procedureParameters = params
+
+        String uri = 'api/arsys/v1/entry/SRM:RequestInterface'
+        log.debug("URI template $uri")
+        uri = renderOneLineTemplate(uri, params)
+
+        Map query = [:]
+
+        log.debug "Query: ${query}"
+
+        Object payload
+
+        String jsonTemplate = ''''''
+        if (jsonTemplate) {
+            payload = payloadFromTemplate(jsonTemplate, params)
+            log.debug("Payload from template: $payload")
+        }
+        //TODO clean empty fields
+        Map headers = [:]
+        return makeRequest('GET', uri, query, payload, headers)
+    }
+// DO NOT EDIT THIS BLOCK ABOVE ^^^=== rest client ends, checksum: c9afa698b2f8b596d09cde027ac46658 ===
     /**
      * Use this method for any request pre-processing: adding custom headers, binary files, etc.
      */
     RESTRequest augmentRequest(RESTRequest request) {
-        if(procedureName == 'createChangeRequest'  || procedureName == 'createIncident' ) {
-            request.setQuery('fields', 'values(Infrastructure Change Id)')
+        if(procedureName == 'createChangeRequest') {
+            request.setQuery('fields', 'values(Infrastructure Change Id,Change_Entry_ID)')
+        }
+
+        if(procedureName == 'createIncident' ) {
+            request.setQuery('fields', 'values(Incident Number,Entry ID)')
         }
 
         if(procedureName == 'createChangeRequest' || procedureName == 'updateChangeRequest' \
@@ -443,6 +528,19 @@ class ECRemedyRESTClient {
             request.withContentString(JsonOutput.toJson(procedureParameters.payload))
             log.trace("payload: ${request.contentString}")
         }
+
+        if(procedureName == 'getChangeRequestByInfrastructureChangeId') {
+            request.setQuery('q', '\'Infrastructure Change ID\' = "' + procedureParameters.get('Infrastructure Change Id') + '"')
+        }
+
+        if(procedureName == 'getIncidentByIncidentNumber') {
+            request.setQuery('q', '\'Incident Number\' = "' + procedureParameters.get('Incident Number') + '"')
+        }
+
+        if(procedureName == 'getServiceRequestByRequestNumber') {
+            request.setQuery('q', '\'Request Number\' = "' + procedureParameters.get('Request Number') + '"')
+        }
+
         return request
     }
 
