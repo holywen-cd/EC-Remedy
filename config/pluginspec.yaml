@@ -618,8 +618,25 @@ procedures:
     httpMethod: 'GET'
 
 -
+  name: 'Check Service Request Status'
+  description: 'Get Remedy Service Request Details By Request Number and check if the Status is in the list'
+  hasConfig: true
+  shell: 'ec-groovy'
+  parameters:
+    - name: Request Number
+      documentation: Request Number of a Service Request.
+      required: true
+      type: entry
+      label: Request Number
+    - name: Statuses
+      documentation: Request Status list of a Service Request, comma seperated list.
+      required: true
+      type: entry
+      label: Statuses
+
+-
   name: 'Wait for Change Request Window and Approval'
-  description: 'Wait for Change Request Time Window and Approval'
+  description: Wait for Change Request Time Window and Approval (In Status Scheduled/Implementation In Progress and not Cancelled)
   hasConfig: true
   shell: 'ec-groovy'
   parameters:

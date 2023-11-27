@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Fri Nov 24 16:46:18 ICT 2023
+Revised on Mon Nov 27 13:59:34 ICT 2023
 
 
 * * *
@@ -298,7 +298,7 @@ Get Remedy Service Request Details By Request Number
 
 ## Wait for Change Request Window and Approval
 
-Wait for Change Request Time Window and Approval
+Wait for Change Request Time Window and Approval (In Status Scheduled/Implementation In Progress and not Cancelled)
 
 ### Wait for Change Request Window and Approval Parameters
 

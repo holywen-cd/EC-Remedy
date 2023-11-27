@@ -354,7 +354,7 @@ class Remedy extends FlowPlugin {
         Map restParams = [:]
         Map requestParams = p.asMap
         restParams.put('Infrastructure Change Id', requestParams.get('Infrastructure Change Id'))
-        def notApprovedStates = ['Draft', 'Planning In Progress', 'Schedule For Approval']
+        def notApprovedStates = ['Draft', 'Planning In Progress', 'Scheduled For Approval']
         def approvedStates = ['Scheduled', 'Implementation In Progress']
 
         try {
@@ -520,10 +520,49 @@ class Remedy extends FlowPlugin {
             }
 
             sr.apply()
+            log.info("step Get Service Request By Request Number has been finished")
         } finally {
             rest.logout()
         }
     }
+/**
+    * checkServiceRequestStatus - Check Service Request Status/Check Service Request Status
+    * Add your code into this method and it will be called when the step runs
+    * @param config (required: true)
+    * @param Request Number (required: true)
+    * @param Statuses (required: true)
+    
+    */
+    def checkServiceRequestStatus(StepParameters p, StepResult sr) {
+        // Use this parameters wrapper for convenient access to your parameters
+        CheckServiceRequestStatusParameters sp = CheckServiceRequestStatusParameters.initParameters(p)
+        ECRemedyDynamicTokenRESTClient rest = genECRemedyDynamicTokenRESTClient()
+
+        Map restParams = [:]
+        Map requestParams = p.asMap
+        def Statuses = requestParams.get('Statuses').split ( ',' )
+
+        restParams.put('Request Number', requestParams.get('Request Number'))
+
+        try {
+            Object response = rest.getServiceRequestByRequestNumber(restParams)
+            log.info "Got response from server: $response"
+
+            def status = response.entries[0].values.get('Status')
+            if(status in Statuses) {
+                log.info "Service Request is in $status status"
+            } else {
+                throw new Exception("Service Request is not in $Statuses status")
+            }
+
+            sr.apply()
+            log.info("step Check Service Request Status has been finished")
+        } finally {
+            rest.logout()
+        }
+
+    }
+
 // === step ends ===
 
 }
