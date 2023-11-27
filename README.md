@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Mon Nov 27 13:59:34 ICT 2023
+Revised on Mon Nov 27 16:08:22 ICT 2023
 
 
 * * *
@@ -31,6 +31,7 @@ Contents
     *   [Get Incident](#get-incident)
     *   [Get Incident By Incident Number](#get-incident-by-incident-number)
     *   [Get Service Request By Request Number](#get-service-request-by-request-number)
+    *   [Check Service Request Status](#check-service-request-status)
     *   [Wait for Change Request Window and Approval](#wait-for-change-request-window-and-approval)
 
 ## Overview
@@ -293,6 +294,20 @@ Get Remedy Service Request Details By Request Number
 | **Configuration Name** | Previously defined configuration for the plugin |
 | **Request Number** | Request Number of a Service Request. |
 | resultPropertyPath | The property path to store the result of the procedure.<br> |
+
+
+
+## Check Service Request Status
+
+Get Remedy Service Request Details By Request Number and check if the Status is in the list
+
+### Check Service Request Status Parameters
+
+| Parameter | Description |
+| --- | --- |
+| **Configuration Name** | Previously defined configuration for the plugin |
+| **Request Number** | Request Number of a Service Request. |
+| **Statuses** | Request Status list of a Service Request, comma seperated list. |
 
 
 
