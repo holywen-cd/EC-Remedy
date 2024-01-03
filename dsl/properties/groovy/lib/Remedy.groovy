@@ -354,6 +354,7 @@ class Remedy extends FlowPlugin {
         Map restParams = [:]
         Map requestParams = p.asMap
         restParams.put('Infrastructure Change Id', requestParams.get('Infrastructure Change Id'))
+        def pollingInterval = sp.pollingInterval * 1000
         def notApprovedStates = ['Draft', 'Planning In Progress', 'Scheduled For Approval']
         def approvedStates = ['Scheduled', 'Implementation In Progress']
 
@@ -389,7 +390,7 @@ class Remedy extends FlowPlugin {
             def status = response.entries[0].values.get("Change Request Status")
             while(status in notApprovedStates) {
                 log.debug  "status (at the start of wait loop): $status"
-                sleep 300 * 1000
+                sleep pollingInterval
                 response = rest.getChangeRequestByInfrastructureChangeId(restParams)
                 print '.'
                 log.debug "Got rest.getChangeRequestByInfrastructureChangeId response from server: ${JsonOutput.toJson(response)}"

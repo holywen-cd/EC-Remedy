@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Mon Nov 27 16:08:22 ICT 2023
+Revised on Tue Jan 02 20:24:10 ICT 2024
 
 
 * * *
@@ -44,7 +44,7 @@ Cloudbees CD integration for the <a href="https://docs.bmc.com/docs/ars1902/inte
 
 ## Plugin Configurations
 
-Plugin configurations are sets of parameters that can be applied across some, or all, of the plugin procedures. They can reduce the repetition of common values, create predefined parameter sets, and securely store credentials. Each configuration is given a unique name that is entered in the designated parameter for the plugin procedures that use them.  
+Plugin configurations are sets of parameters that can be applied across some, or all, of the plugin procedures. They can reduce the repetition of common values, create predefined parameter sets, and securely store credentials. Each configuration is given a unique name that is entered in the designated parameter for the plugin procedures that use them.
 
 ### Creating Plugin Configurations
 
@@ -321,3 +321,4 @@ Wait for Change Request Time Window and Approval (In Status Scheduled/Implementa
 | --- | --- |
 | **Configuration Name** | Previously defined configuration for the plugin |
 | **Infrastructure Change Id** | Infrastructure Change Id of a change request. |
+| Polling Interval | interval in seconds to poll the status |

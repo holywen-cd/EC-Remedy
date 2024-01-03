@@ -646,4 +646,10 @@ procedures:
     required: true
     type: entry
     label: Infrastructure Change Id
+  - name: Polling Interval
+    documentation: interval in seconds to poll the status
+    required: false
+    value: 30
+    type: entry
+    label: Polling Interval
 

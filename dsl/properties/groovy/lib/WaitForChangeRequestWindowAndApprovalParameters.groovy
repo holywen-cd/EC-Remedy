@@ -9,6 +9,10 @@ class WaitForChangeRequestWindowAndApprovalParameters {
     * Label: Infrastructure Change Id, type: entry
     */
     String infrastructureChangeId
+    /**
+    * Label: Polling Interval, type: entry
+    */
+    String pollingInterval
 
     static WaitForChangeRequestWindowAndApprovalParameters initParameters(StepParameters sp) {
         WaitForChangeRequestWindowAndApprovalParameters parameters = new WaitForChangeRequestWindowAndApprovalParameters()
@@ -16,7 +20,10 @@ class WaitForChangeRequestWindowAndApprovalParameters {
         def infrastructureChangeId = sp.getRequiredParameter('Infrastructure Change Id').value
         parameters.infrastructureChangeId = infrastructureChangeId
 
+        def pollingInterval = sp.getParameter('Polling Interval').value
+        parameters.pollingInterval = pollingInterval  ?: '30'
+
         return parameters
     }
 }
-// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 17579f8771f21fc37309e8880677fbac ===
+// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 76b705679676158da78c5278c8a2880c ===
