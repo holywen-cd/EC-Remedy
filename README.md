@@ -6,7 +6,7 @@ EC-Remedy
 
 Plugin version 2.0.0
 
-Revised on Tue Jan 02 20:24:10 ICT 2024
+Revised on Thu Jan 04 12:45:15 ICT 2024
 
 
 * * *
@@ -321,4 +321,4 @@ Wait for Change Request Time Window and Approval (In Status Scheduled/Implementa
 | --- | --- |
 | **Configuration Name** | Previously defined configuration for the plugin |
 | **Infrastructure Change Id** | Infrastructure Change Id of a change request. |
-| Polling Interval | interval in seconds to poll the status |
+| Polling Interval | interval in seconds to poll the status during the change window |
